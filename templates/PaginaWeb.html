@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Salud e IMC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 25px;
+            margin-bottom: 1em;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 6px;
+            background: #27ae60;
+            width: 0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        .column {
+            flex: 1;
+            padding: 0 1em;
+            border-left: 1px solid #ddd;
+        }
+
+        .column:first-child {
+            border-left: none;
+        }
+
+        .question {
+            margin-bottom: 1em;
+        }
+
+        h3 {
+            font-size: 0.9em;
+            margin-bottom: 0.3em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.2em;
+            font-size: 0.85em;
+        }
+
+        input[type="radio"], input[type="number"] {
+            margin-right: 0.4em;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.5em;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+
+        button:hover {
+            background: #219150;
+        }
+
+        .results {
+            text-align: center;
+            margin-top: 1em;
+            font-size: 0.9em;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cuestionario para predecir el cáncer pulmonar</h1>
+
+        <div class="progress-bar">
+            <div class="progress-bar-fill"></div>
+        </div>
+
+        <form action="/procesar_formulario" method="post" oninput="updateProgress()">
+            <div class="columns">
+                <!-- Primera columna -->
+                <div class="column">
+                    <div class="question">
+                        <h3>1. Calcule su IMC</h3>
+                        <label for="weight">Peso (kg):</label>
+                        <input type="number" id="weight" name="weight" step="0.1" required>
+                        <label for="height">Estatura (m):</label>
+                        <input type="number" id="height" name="height" step="0.01" required>
+                    </div>
+
+                    <div class="question">
+                        <h3>2. ¿Con qué frecuencia tose con sangre?</h3>
+                        <label><input type="radio" name="Coughing_of_Blood" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Coughing_of_Blood" value="2"> A veces</label>
+                        <label><input type="radio" name="Coughing_of_Blood" value="3"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>3. ¿Con qué frecuencia sigue una dieta balanceada?</h3>
+                        <label><input type="radio" name="Balanced_Diet" value="3" required> Nunca</label>
+                        <label><input type="radio" name="Balanced_Diet" value="2"> A veces</label>
+                        <label><input type="radio" name="Balanced_Diet" value="1"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>4. ¿Está expuesto al humo del tabaco?</h3>
+                        <label><input type="radio" name="Passive_Smoker" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Passive_Smoker" value="2"> A veces</label>
+                        <label><input type="radio" name="Passive_Smoker" value="3"> Muy frecuente</label>
+                    </div>
+                </div>
+
+                <!-- Segunda columna -->
+                <div class="column">
+                    <div class="question">
+                        <h3>5. ¿Tiene alergia al polvo?</h3>
+                        <label><input type="radio" name="Dust_Allergy" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Dust_Allergy" value="2"> A veces</label>
+                        <label><input type="radio" name="Dust_Allergy" value="3"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>6. ¿Con qué frecuencia consume alcohol?</h3>
+                        <label><input type="radio" name="Alcohol_use" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Alcohol_use" value="2"> A veces</label>
+                        <label><input type="radio" name="Alcohol_use" value="3"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>7. ¿Existe riesgo genético de cáncer en su familia?</h3>
+                        <label><input type="radio" name="Genetic_Risk" value="1" required> No</label>
+                        <label><input type="radio" name="Genetic_Risk" value="2"> Algunos casos</label>
+                        <label><input type="radio" name="Genetic_Risk" value="3"> Muchos casos</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>8. ¿Está expuesto a contaminación del aire?</h3>
+                        <label><input type="radio" name="Air_Pollution" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Air_Pollution" value="2"> A veces</label>
+                        <label><input type="radio" name="Air_Pollution" value="3"> Muy frecuente</label>
+                    </div>
+                </div>
+
+                <!-- Tercera columna -->
+                <div class="column">
+                    <div class="question">
+                        <h3>9. ¿Con qué frecuencia experimenta dolor en el pecho?</h3>
+                        <label><input type="radio" name="Chest_Pain" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Chest_Pain" value="2"> A veces</label>
+                        <label><input type="radio" name="Chest_Pain" value="3"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>10. ¿Está expuesto a riesgos laborales?</h3>
+                        <label><input type="radio" name="OccuPational_Hazards" value="1" required> Nunca</label>
+                        <label><input type="radio" name="OccuPational_Hazards" value="2"> A veces</label>
+                        <label><input type="radio" name="OccuPational_Hazards" value="3"> Muy frecuente</label>
+                    </div>
+
+                    <div class="question">
+                        <h3>11. ¿Tiene alguna enfermedad pulmonar crónica?</h3>
+                        <label><input type="radio" name="chronic_Lung_Disease" value="1" required> Nunca</label>
+                        <label><input type="radio" name="chronic_Lung_Disease" value="2"> He tenido anteriormente</label>
+                        <label><input type="radio" name="chronic_Lung_Disease" value="3"> Tengo actualmente</label>                        
+                    </div>
+
+                    <div class="question">
+                        <h3>12. ¿Con qué frecuencia fuma?</h3>
+                        <label><input type="radio" name="Smoking" value="1" required> Nunca</label>
+                        <label><input type="radio" name="Smoking" value="2"> A veces</label>
+                        <label><input type="radio" name="Smoking" value="3"> Muy frecuente</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <div class="results">
+            {% if bmi_result %}
+            <h1>Resultado del IMC: {{ bmi_result }}</h1>
+            {% endif %}
+            
+            {% if prediction is not none %}
+                <div>
+                    {% if prediction == 0 %}
+                        <p style="color: red;"><strong>Riesgo alto de desarrollar cáncer de pulmón </strong></p>
+                    {% elif prediction == 2 %}
+                        <p style="color: orange;"><strong>Existe la probabilidad de desarrollar cáncer de pulmón</strong></p>
+                    {% elif prediction == 1 %}
+                        <p style="color: green;"><strong>Poca o nula probabilidad de desarrollar cáncer de pulmón</strong></p>
+
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const totalQuestions = 14;
+            let answeredQuestions = 0;
+
+            document.querySelectorAll("input[type='radio']:checked").forEach(() => answeredQuestions++);
+            if (document.getElementById("weight").value) answeredQuestions++;
+            if (document.getElementById("height").value) answeredQuestions++;
+
+            const progress = Math.min((answeredQuestions / totalQuestions) * 100, 100);
+            document.querySelector('.progress-bar-fill').style.width = progress + "%";
+        }
+    </script>
+</body>
+</html>
